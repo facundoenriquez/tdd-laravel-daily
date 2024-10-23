@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
+    use refreshDatabase;
     /**
      * A basic feature test example.
      */
