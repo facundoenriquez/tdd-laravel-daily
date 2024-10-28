@@ -10,6 +10,12 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="overflow-x-auto">
+
+                        @if(auth()->user()->is_admin)
+                            <a href="{{route('products.create')}}" class="mb-4 inline-flex items-center px-4 py-2 bg-slate-500">Add
+                                new product</a>
+                        @endif
+
                         <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
                             <thead>
                             <tr>
@@ -33,7 +39,8 @@
                                 </tr>
                             @empty
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
-                                    <td colspan="2" class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200">
+                                    <td colspan="2"
+                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200">
                                         {{__('No products found')}}
                                     </td>
                                 </tr>
