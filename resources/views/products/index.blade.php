@@ -12,8 +12,8 @@
                     <div class="overflow-x-auto">
 
                         @if(auth()->user()->is_admin)
-                            <a href="{{route('products.create')}}" class="mb-4 inline-flex items-center px-4 py-2 bg-slate-500">Add
-                                new product</a>
+                            <a href="{{route('products.create')}}"
+                               class="mb-4 inline-flex items-center px-4 py-2 bg-slate-500">Add new product</a>
                         @endif
 
                         <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">

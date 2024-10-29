@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ProductsTest extends TestCase
@@ -14,12 +15,14 @@ class ProductsTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+    private User $admin;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = $this->createUser();
+        $this->admin = $this->createUser(true);
     }
 
     public function test_homepage_contains_empty_table(): void
@@ -61,8 +64,40 @@ class ProductsTest extends TestCase
         });
     }
 
-    public function createUser(): User
+    public function test_admin_can_see_products_create_button()
     {
-        return User::factory()->create();
+        $response = $this->actingAs($this->admin)->get('/products');
+
+        $response->assertStatus(200);
+        $response->assertSee(__('Add new product'));
+    }
+
+    public function test_non_admin_cannot_see_products_create_button()
+    {
+        $response = $this->actingAs($this->user)->get('/products');
+
+        $response->assertStatus(200);
+        $response->assertDontSee(__('Add new product'));
+    }
+
+    public function test_admin_can_access_product_create_page()
+    {
+        $response = $this->actingAs($this->admin)->get('/products/create');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_product_create_page()
+    {
+        $response = $this->actingAs($this->user)->get('/products/create');
+
+        $response->assertStatus(403);
+    }
+
+    public function createUser(bool $isAdmin = false): User
+    {
+        return User::factory()->create([
+            'is_admin' => $isAdmin,
+        ]);
     }
 }

@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
     Route::middleware([isAdminMiddleware::class])->group(function () {
         Route::get('products/create', [ProductController::class, 'create'])->name('products.create');

@@ -10,9 +10,6 @@ class isAdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-
-        dd(auth()->user());
-
         if (!auth()->user()->is_admin) {
             abort(403);
         }
