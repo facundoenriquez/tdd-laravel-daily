@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -94,7 +95,27 @@ class ProductsTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function createUser(bool $isAdmin = false): User
+    public function test_create_product_successful(): void
+    {
+        $product = [
+            'name' => 'Product 1',
+            'price' => 123
+        ];
+
+        $response = $this->actingAs($this->admin)->post('/products', $product);
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/products');
+
+        $this->assertDatabaseHas('products', $product);
+
+        $lastProduct = Product::latest()->first();
+
+        $this->assertEquals($product['name'], $lastProduct->name);
+        $this->assertEquals($product['price'], $lastProduct->price);
+    }
+
+    private function createUser(bool $isAdmin = false): User
     {
         return User::factory()->create([
             'is_admin' => $isAdmin,

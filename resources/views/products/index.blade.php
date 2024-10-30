@@ -36,6 +36,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200">
                                         ${{$product->price}}
                                     </td>
+                                    @if(auth()->user()->is_admin)
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200">
+                                            <a href="{{route('products.edit',$product)}}"
+                                               class="mb-4 inline-flex items-center">Edit</a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
