@@ -12,11 +12,13 @@
                     <div class="overflow-x-auto">
 
                         @if(auth()->user()->is_admin)
-                            <a href="{{route('products.create')}}"
-                               class="mb-4 inline-flex items-center px-4 py-2 bg-slate-500">Add new product</a>
+                            <form action="{{route('products.create')}}" method="get"
+                                  class="inline-block">
+                                <x-primary-button class="bg-blue-600 text-white">Add new product</x-primary-button>
+                            </form>
                         @endif
 
-                        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 mt-2">
                             <thead>
                             <tr>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -37,9 +39,22 @@
                                         ${{$product->price}}
                                     </td>
                                     @if(auth()->user()->is_admin)
+
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200">
-                                            <a href="{{route('products.edit',$product)}}"
-                                               class="mb-4 inline-flex items-center">Edit</a>
+                                            <form action="{{route('products.edit', $product)}}" method="get"
+                                                  class="inline-block">
+                                                <x-primary-button class="bg-blue-600 text-white">Edit</x-primary-button>
+                                            </form>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-200">
+                                            <form action="{{route('products.destroy', $product)}}" method="post"
+                                                  class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-primary-button onclick="return confirm('Are you sure?')"
+                                                                  class="bg-red-600 text-white">Delete
+                                                </x-primary-button>
+                                            </form>
                                         </td>
                                     @endif
                                 </tr>
